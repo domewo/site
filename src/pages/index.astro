@@ -1,0 +1,571 @@
+---
+// src/pages/index.astro
+
+// 自分のSNSリンク
+const socialLinks = [
+  "https://x.com/@domew0",
+  "https://instagram.com/@domewo3",
+  "https://youtube.com/@domewo",
+  "https://soundcloud.com/domewo",
+  "https://note.com/domewo",
+ // "https://github.com/YourAccount","https://~.com/myAccount",,
+];
+
+// リンクからアイコンを自動判定する関数
+const getIconClass = (url) => {
+  if (url.includes("twitter") || url.includes("x.com")) return "fa-brands fa-x-twitter";
+  if (url.includes("github")) return "fa-brands fa-github";
+  if (url.includes("instagram")) return "fa-brands fa-instagram";
+  if (url.includes("youtube")) return "fa-brands fa-youtube";
+  if (url.includes("soundcloud")) return "fa-brands fa-soundcloud";
+  if (url.includes("note")) return "fa-solid fa-book-open"; // note用(本)
+  return "fa-solid fa-link"; // それ以外(リンクアイコン)
+};
+---
+
+<html lang="ja" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>NAME SURNAME - Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@400;500;700&family=Shippori+Mincho:wght@500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+      /* カスタムスクロールバー */
+      ::-webkit-scrollbar { width: 6px; }
+      ::-webkit-scrollbar-track { background: #050505; }
+      ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+      
+      /* ベース設定 */
+      body { background-color: #050505; color: #EEEEEE; }
+      
+      /* スクロール出現アニメーション */
+      .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* 縦書き設定 */
+      .vertical-rl { writing-mode: vertical-rl; }
+
+      /* 背景ノイズ */
+      .noise-bg {
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+      }
+
+      /* モバイルメニューのアニメーション */
+      .mobile-menu-enter { opacity: 0; pointer-events: none; }
+      .mobile-menu-enter-active { opacity: 1; pointer-events: auto; transition: opacity 0.3s ease; }
+
+      /* LOG行番号の自動採番設定 */
+      .log-container {
+        counter-reset: log-line; /* カウンターのリセット */
+      }
+      .log-row {
+        counter-increment: log-line; /* 行ごとにカウントアップ */
+      }
+      .log-number::before {
+        content: counter(log-line); /* 数字を表示 */
+      }
+    </style>
+  </head>
+  
+  <body class="font-sans antialiased selection:bg-white selection:text-black overflow-x-hidden md:pl-0">
+    
+    <div class="fixed inset-0 pointer-events-none z-50 mix-blend-overlay noise-bg opacity-30"></div>
+
+    <button id="mobile-toggle" class="fixed top-6 right-6 z-[200] md:hidden flex flex-col gap-1.5 p-2 mix-blend-difference">
+        <span class="w-8 h-0.5 bg-white transition-transform duration-300 origin-center"></span>
+        <span class="w-8 h-0.5 bg-white transition-transform duration-300 origin-center"></span>
+    </button>
+
+    <div id="mobile-menu" class="fixed inset-0 bg-[#0a0a0a] z-[150] flex flex-col justify-center items-center mobile-menu-enter">
+        <nav class="flex flex-col gap-8 text-center font-serif text-2xl font-bold mb-12">
+            <a href="#hero" class="mobile-link text-gray-500 hover:text-white transition-colors">TOP</a>
+            <a href="#log" class="mobile-link text-gray-500 hover:text-white transition-colors">LOG</a>
+            <a href="#profile" class="mobile-link text-gray-500 hover:text-white transition-colors">PROFILE</a>
+            <a href="#archives" class="mobile-link text-gray-500 hover:text-white transition-colors">WORKS</a>
+            <a href="#diary" class="mobile-link text-gray-500 hover:text-white transition-colors">BLOG</a>
+            <a href="#signal" class="mobile-link text-gray-500 hover:text-white transition-colors">SIGNAL</a>
+        </nav>
+
+        <div class="flex gap-8 border-t border-[#333] pt-8">
+             <a href="#" class="text-gray-500 hover:text-white transition-colors">
+                <svg fill="currentColor" viewBox="0 0 24 24" class="w-6 h-6"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+             </a>
+             <a href="#" class="text-gray-500 hover:text-white transition-colors">
+                <svg fill="currentColor" viewBox="0 0 24 24" class="w-6 h-6"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+             </a>
+        </div>
+    </div>
+
+    <nav id="side-nav" class="hidden md:flex fixed top-0 left-0 h-full w-20 z-[100] flex-col justify-center items-center bg-[#111] border-r border-gray-700 transition-transform duration-500 -translate-x-full shadow-[5px_0_30px_rgba(0,0,0,0.5)]">
+        <div class="mb-8 text-gray-500">
+            <svg id="nav-gear" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+        </div>
+        <div class="flex flex-col gap-6 font-sans text-sm tracking-widest text-gray-400 font-bold">
+            <a href="#hero" class="hover:text-white transition-colors vertical-rl rotate-180 py-2 hover:scale-110 duration-200">TOP</a>
+            <a href="#log" class="hover:text-white transition-colors vertical-rl rotate-180 py-2 hover:scale-110 duration-200">LOG</a>
+            <a href="#profile" class="hover:text-white transition-colors vertical-rl rotate-180 py-2 hover:scale-110 duration-200">PROFILE</a>
+            <a href="#archives" class="hover:text-white transition-colors vertical-rl rotate-180 py-2 hover:scale-110 duration-200">WORKS</a>
+            <a href="#diary" class="hover:text-white transition-colors vertical-rl rotate-180 py-2 hover:scale-110 duration-200">BLOG</a>
+            <a href="#signal" class="hover:text-white transition-colors vertical-rl rotate-180 py-2 hover:scale-110 duration-200">SIGNAL</a>
+        </div>
+    </nav>
+
+	<aside class="hidden md:flex fixed top-0 right-0 h-full w-20 z-[90] flex-col justify-center items-center">
+		<div class="h-24 w-[1px] bg-gray-800 mb-6"></div>
+		
+		<div class="flex flex-col gap-6">
+			{socialLinks.map((url) => (
+			<a href={url} target="_blank" class="text-gray-400 hover:text-white hover:scale-110 transition-all duration-300">
+				<i class={`${getIconClass(url)} text-xl`}></i>
+			</a>
+			))}
+		</div>
+		
+		<div class="h-24 w-[1px] bg-gray-800 mt-6"></div>
+    </aside>
+
+    <main class="max-w-6xl mx-auto px-6 py-24 relative z-10">
+
+      <section id="hero" class="min-h-[90vh] flex flex-col justify-center mb-20 pl-4 md:pl-20">
+        <div class="reveal active flex flex-col md:flex-row items-start md:items-center gap-12 md:gap-24">
+            <div>
+                <h1 class="text-6xl md:text-8xl font-bold tracking-widest leading-none mb-6 font-serif">
+                KAZUTO<br>FUKUDOME
+                </h1>
+                <p class="text-gray-500 font-mono text-xs tracking-[0.2em] border-l border-white pl-4 ml-1">
+                AUDIO & EEG RESEARCH BEGINNER / MUSIC CREATOR (DOMEWO)
+                </p>
+            </div>
+            <div class="w-full md:w-64 aspect-[4/5]  border-[#333] relative overflow-hidden group"><!--bg-[#111] border-->>
+				<!--<div class="absolute inset-0 flex items-center justify-center opacity-20">
+                    <div class="w-32 h-32 border border-white rounded-full"></div>
+                    <div class="absolute w-[1px] h-full bg-white"></div>
+                </div>-->
+                <div class="absolute bottom-2 right-2 font-mono text-[10px] text-gray-500">
+					<img src="/domewologo2.jpeg" alt="Portrait" class="object-cover w-full h-full"/>
+				</div>
+            </div>
+        </div>
+      </section>
+
+      <section id="log" class="mb-56 reveal md:pl-20">
+        <h2 class="text-3xl font-bold font-serif mb-8 tracking-wider border-b border-[#333] pb-4 inline-block">LOG</h2>
+
+        <div class="bg-[#0a0a0a] border border-[#333] font-mono text-sm md:text-base relative shadow-2xl">
+          
+          <div class="flex flex-col py-2 max-h-[300px] overflow-y-auto log-container">
+			<!-- [NEWS] [RELEASE] [PAPER] [CONFERENCE] -->
+			<!-- 
+			<div class="flex group hover:bg-[#111] transition-colors log-row">
+                <div class="w-10 md:w-12 text-gray-600 text-right pr-3 py-1 select-none flex-none border-r border-[#333] leading-relaxed log-number"></div>
+                
+                <div class="flex-1 py-1 px-4 flex flex-col md:flex-row md:items-baseline md:gap-0 leading-relaxed">
+                    <div class="flex items-center gap-3 md:gap-0 shrink-0">
+                        <span class="text-gray-600 select-none md:w-6">&gt;</span>
+                        <span class="text-[#56b6c2] md:w-28">2026-01-20</span>
+                        <div class="md:w-24">
+                           <span class="text-green-400 font-bold tracking-tighter text-xs select-none shadow-[0_0_10px_rgba(74,222,128,0.3)]">/* NEW */</span>
+                        </div>
+                        <span class="text-[#c678dd] font-bold md:w-32">[RELEASE]</span>
+                    </div>
+                    <div class="text-gray-300 w-full md:flex-1 pl-6 md:pl-0 mt-1 md:mt-0 group-hover:text-white transition-colors">
+                        ~
+                    </div>
+                </div>
+             </div>
+			
+			-->
+			 <div class="flex group hover:bg-[#111] transition-colors log-row">
+                <div class="w-10 md:w-12 text-gray-600 text-right pr-3 py-1 select-none flex-none border-r border-[#333] leading-relaxed log-number"></div>
+                <div class="flex-1 py-1 px-4 flex flex-col md:flex-row md:items-baseline md:gap-0 leading-relaxed">
+                    <div class="flex items-center gap-3 md:gap-0 shrink-0">
+                        <span class="text-gray-600 select-none md:w-6">&gt;</span>
+                        <span class="text-[#56b6c2] md:w-28">2026-01-17</span>
+                        <div class="md:w-24">
+							<span class="text-green-400 font-bold tracking-tighter text-xs select-none shadow-[0_0_10px_rgba(74,222,128,0.3)]">/* NEW */</span>
+						</div>
+                        <span class="text-[#98c379] font-bold md:w-32">[NEWS]</span>
+                    </div>
+                    <div class="text-gray-300 w-full md:flex-1 pl-6 md:pl-0 mt-1 md:mt-0 group-hover:text-white transition-colors">
+                        This site has been redesigned.
+                    </div>
+                </div>
+             </div>
+             <div class="flex group hover:bg-[#111] transition-colors log-row">
+                <div class="w-10 md:w-12 text-gray-600 text-right pr-3 py-1 select-none flex-none border-r border-[#333] leading-relaxed log-number"></div>
+                <div class="flex-1 py-1 px-4 flex flex-col md:flex-row md:items-baseline md:gap-0 leading-relaxed">
+                    <div class="flex items-center gap-3 md:gap-0 shrink-0">
+                        <span class="text-gray-600 select-none md:w-6">&gt;</span>
+                        <span class="text-[#56b6c2] md:w-28">2025-09-12</span>
+                        <div class="md:w-24"></div>
+                        <span class="text-[#c678dd] font-bold md:w-32">[CONFERENCE]</span>
+                    </div>
+                    <a href="https://acoustics.jp/cms/wp_asj/wp-content/uploads/009_2025autumn_program.pdf" target="_blank" class="text-gray-300 w-full md:flex-1 pl-6 md:pl-0 mt-1 md:mt-0 group-hover:text-white transition-colors">
+                        Accepted at ASJ 2025 Autumn.(Poster:3-Q-35)
+					</a>
+                </div>
+             </div>
+             <div class="flex group hover:bg-[#111] transition-colors log-row">
+                <div class="w-10 md:w-12 text-gray-600 text-right pr-3 py-1 select-none flex-none border-r border-[#333] leading-relaxed log-number"></div>
+                <div class="flex-1 py-1 px-4 flex flex-col md:flex-row md:items-baseline md:gap-0 leading-relaxed">
+                    <div class="flex items-center gap-3 md:gap-0 shrink-0">
+                        <span class="text-gray-600 select-none md:w-6">&gt;</span>
+                        <span class="text-[#56b6c2] md:w-28">2025-08-31</span>
+                        <div class="md:w-24"></div> 
+                        <span class="text-[#e5c07b] font-bold md:w-32">[RELEASE]</span>
+                    </div>
+                    <a href = "https://www.youtube.com/watch?v=GnCypStCY-A" target="_blank" class="text-gray-300 w-full md:flex-1 pl-6 md:pl-0 mt-1 md:mt-0 group-hover:text-white transition-colors">
+                        Sheet Music Video 'Iteration' released.
+					</a>
+                </div>
+             </div>
+
+             <div class="flex group hover:bg-[#111] transition-colors log-row">
+                <div class="w-10 md:w-12 text-gray-600 text-right pr-3 py-1 select-none flex-none border-r border-[#333] leading-relaxed log-number"></div>
+                <div class="flex-1 py-1 px-4 flex flex-col md:flex-row md:items-baseline md:gap-0 leading-relaxed">
+                    <div class="flex items-center gap-3 md:gap-0 shrink-0" >
+                        <span class="text-gray-600 select-none md:w-6">&gt;</span>
+                        <span class="text-[#56b6c2] md:w-28">2025-07-06</span>
+                        <div class="md:w-24"></div>
+                        <span class="text-[#98c379] font-bold md:w-32">[NEWS]</span>
+                    </div>
+                    <div class="text-gray-300 w-full md:flex-1 pl-6 md:pl-0 mt-1 md:mt-0 group-hover:text-white transition-colors">
+                        This site has been launched.
+                    </div>
+                </div>
+             </div>
+
+             <div class="flex text-gray-600">
+                <div class="w-10 md:w-12 text-gray-800 text-right pr-3 py-1 select-none flex-none border-r border-[#333] leading-relaxed log-number"></div>
+                <div class="flex-1 py-1 px-4 flex items-center gap-3 leading-relaxed">
+                     <span class="select-none md:w-6">&gt;</span>
+                     <span>SYSTEM READY...</span>
+                </div>
+             </div>
+
+             <div class="flex">
+                <div class="w-10 md:w-12 text-gray-800 text-right pr-3 py-1 select-none flex-none border-r border-[#333] leading-relaxed log-number"></div>
+                <div class="flex-1 py-1 px-4 flex items-center gap-3 leading-relaxed">
+                     <span class="text-gray-800 select-none md:w-6">&gt;</span>
+                     <span class="animate-pulse bg-gray-500 w-2 h-5 block"></span>
+                </div>
+             </div>
+
+          </div>
+        </div>
+      </section>
+
+      <section id="profile" class="mb-56 reveal md:pl-20">
+        <h2 class="text-3xl font-bold font-serif mb-12 tracking-wider border-b border-[#333] pb-4 inline-block">PROFILE</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 min-h-[500px]">
+            <div class="relative h-full border border-[#222] bg-[#080808] overflow-hidden flex items-center justify-center min-h-[400px]">
+                <div class="absolute inset-0 flex justify-center items-center opacity-10 pointer-events-none select-none"></div>
+                <img src="/piano.jpeg" alt="Profile Background" class="absolute inset-0 w-full h-full object-cover opacity-100 group-hover:opacity-100 transition-opacity duration-500" />
+
+                <div class="absolute inset-0 flex justify-center items-center opacity-50 pointer-events-none select-none z-20">
+                    <!--<div class="flex gap-48">
+                        <span class="writing-vertical-rl text-6xl font-serif font-bold text-white leading-none">聴覚</span>
+                        <span class="writing-vertical-rl text-6xl font-serif font-bold text-white leading-none mt-80">創出</span>
+                    </div> -->
+                </div>
+            </div>
+
+            <div class="flex flex-col justify-center pl-0 md:pl-8">
+                <h3 class="font-serif text-3xl font-bold mb-8 leading-relaxed">
+                    福留 和杜 (DOMEWO)
+                </h3>
+                <div class="font-mono text-sm text-gray-400 leading-loose space-y-6">
+                    <p>
+						九州工業大学　工学部　電気電子工学科　水町研究室<br>
+                        Specializing in Acoustics, Auditory, Speech, and EEG.<br>
+						聴覚と発話の相互作用<br>
+						・遅延聴覚フィードバック<br>
+						音声知覚<br>
+						・言語音声知覚障害<br>
+                    </p>
+                    <p>
+                        「音をどう聴くか」という科学的視座<br>
+						「音をどう作るか」という芸術的視座<br>
+                        人間の聴覚メカニズムの解明と、私的な音楽表現の創出<br>
+						二つの領域を横断し、深めることを目指しています。
+                    </p>
+                    <div class="pt-6 flex gap-4 text-xs text-white">
+                        <span class="border-b border-white pb-1">Python</span>
+                        <span class="border-b border-white pb-1">MATLAB</span>
+                        <span class="border-b border-white pb-1">LogicPro</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </section>
+
+      <section id="archives" class="mb-56 reveal md:pl-20">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-4 border-b border-[#222]">
+           <h2 class="text-3xl font-bold font-serif tracking-wider">ARCHIVES</h2>
+           <div class="flex gap-6 font-mono text-xs tracking-wider" id="filters">
+             <button class="filter-btn text-white border-b border-white pb-1" data-filter="all">ALL</button>
+             <button class="filter-btn text-gray-600 hover:text-white transition-colors pb-1" data-filter="music">MUSIC</button>
+             <button class="filter-btn text-gray-600 hover:text-white transition-colors pb-1" data-filter="video">VIDEO</button>
+             <button class="filter-btn text-gray-600 hover:text-white transition-colors pb-1" data-filter="paper">PAPER</button>
+             <button class="filter-btn text-gray-600 hover:text-white transition-colors pb-1" data-filter="talk">ORAL</button>
+           </div>
+        </div>
+
+        <div class="max-h-[600px] overflow-y-auto pr-2">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-1 auto-rows-[280px] bg-[#222] border border-[#222] grid-flow-row-dense" id="works-grid">
+              <!--
+              <article class="work-item group relative bg-[#0a0a0a] overflow-hidden" data-category="music">
+                 <img src="/jacket.jpg" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500">
+                 <div class="absolute bottom-4 left-4">
+                    <h3 class="font-bold text-lg italic text-white">SIGNAL LOSS</h3>
+                    <div class="text-[10px] text-gray-500 font-mono">EP RELEASE</div>
+                 </div>
+              </article>
+
+              <article class="work-item group relative bg-[#000] overflow-hidden" data-category="video">
+                 <div class="absolute inset-0 flex flex-col items-center justify-center opacity-40 group-hover:opacity-80 transition-opacity">
+                     <div class="flex gap-1 items-end h-16">
+                        <div class="w-0.5 bg-white animate-[bounce_1s_infinite] h-[40%]"></div>
+                        <div class="w-0.5 bg-white animate-[bounce_1.2s_infinite] h-[80%]"></div>
+                        <div class="w-0.5 bg-white animate-[bounce_0.8s_infinite] h-[60%]"></div>
+                     </div>
+                 </div>
+                 <div class="absolute bottom-4 left-4">
+                     <h3 class="font-bold text-base">Real-time Vis</h3>
+                     <div class="text-[10px] text-gray-500 font-mono">PYTHON / OPENGL</div>
+                 </div>
+              </article>
+
+              <article class="work-item md:col-span-2 group relative bg-[#050505] overflow-hidden" data-category="paper">
+                 <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:20px_20px]"></div>
+                 <div class="absolute bottom-0 left-0 p-8 w-full z-10">
+                    <div class="font-mono text-white text-[10px] mb-2 border border-white inline-block px-1">PAPER 2025</div>
+                    <h3 class="font-serif font-bold text-2xl text-gray-200 group-hover:text-white transition-colors">聴覚末梢モデルの構築</h3>
+                    <p class="font-mono text-[10px] text-gray-500 mt-1">Computational Modeling of Auditory Periphery</p>
+                 </div>
+                 <div class="absolute top-4 right-4 text-gray-700 group-hover:text-white transition-colors">
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                 </div>
+              </article>
+
+              <article class="work-item md:col-span-2 group relative bg-[#080808] overflow-hidden" data-category="talk">
+                <div class="absolute inset-0 flex items-center justify-center p-8">
+                    <h3 class="font-serif text-xl text-center leading-relaxed text-gray-500 group-hover:text-white transition-colors duration-500">
+                        「遅延聴覚フィードバックにおける<br>発話阻害の定量的分析」
+                    </h3>
+                </div>
+                <div class="absolute bottom-4 left-4 font-mono text-[10px] text-white border border-white px-1">ASJ 2025</div>
+              </article>
+               -->
+              <article class="work-item md:col-span-2 group relative bg-[#080808] overflow-hidden" data-category="talk">
+                <a href="https://jglobal.jst.go.jp/detail?JGLOBAL_ID=202502217459907737" class="absolute inset-0 flex items-center justify-center p-8">
+                    <h3 class="font-serif text-xl text-center leading-relaxed text-gray-500 group-hover:text-white transition-colors duration-500">
+                        「日本語文章の疑問形が<br>遅延聴覚フィードバック条件下での<br>発話に与える影響」
+                    </h3>
+                </a>
+                <div class="absolute bottom-4 left-4 font-mono text-[10px] text-white border border-white px-1">ASJ 2025 Autumn</div>
+              </article>
+              <article class="work-item group relative bg-[#0a0a0a] overflow-hidden" data-category="music">
+                 <div class="absolute inset-0 flex flex-col items-center justify-center opacity-40 group-hover:opacity-80 transition-opacity">
+                     <div class="flex gap-1 items-end h-16">
+                        <div class="w-2 bg-white animate-[bounce_1s_infinite] h-[40%]"></div>
+                        <div class="w-2 bg-white animate-[bounce_1.2s_infinite] h-[80%]"></div>
+                        <div class="w-2 bg-white animate-[bounce_0.8s_infinite] h-[60%]"></div>
+                     </div>
+                 </div>
+                 <a href = "https://soundcloud.com/domewo/iteration" class="absolute inset-0 flex items-center justify-center"></a>
+                 <div class="absolute bottom-4 left-4">
+                    <h3 class="font-bold text-lg text-white">Iteration</h3>
+                    <div class="text-[10px] text-gray-500 font-mono">Kazuto Fukudome / ORIGINAL</div>
+                 </div>
+              </article>
+              <article class="work-item group relative bg-[#000] overflow-hidden" data-category="video">
+                 <div class="absolute inset-0 flex flex-col items-center justify-center opacity-40 group-hover:opacity-80 transition-opacity">
+                     <a href="https://youtu.be/GnCypStCY-A?si=9PLpyFviEp66tE3i">
+                        <img src="http://img.youtube.com/vi/GnCypStCY-A/hqdefault.jpg"/>
+                    </a>
+                 </div>
+                 <div class="absolute bottom-4 left-4">
+                     <h3 class="font-bold text-base">Iteration</h3>
+                     <div class="text-[10px] text-gray-500 font-mono">Kazuto Fukudome / ORIGINAL</div>
+                 </div>
+              </article>
+               <article class="work-item group relative bg-[#000] overflow-hidden" data-category="video">
+                 <div class="absolute inset-0 flex flex-col items-center justify-center opacity-40 group-hover:opacity-80 transition-opacity">
+                     <a href="https://youtu.be/J8ShePbXK0A?si=046vzaChScxa2sBg">
+                        <img src="http://img.youtube.com/vi/J8ShePbXK0A/hqdefault.jpg"/>
+                    </a>
+                 </div>
+                 <div class="absolute bottom-4 left-4">
+                     <h3 class="font-bold text-base">La Campanella</h3>
+                     <div class="text-[10px] text-gray-500 font-mono">Franz Liszt / COVER</div>
+                 </div>
+              </article>
+               <article class="work-item group relative bg-[#000] overflow-hidden" data-category="video">
+                 <div class="absolute inset-0 flex flex-col items-center justify-center opacity-40 group-hover:opacity-80 transition-opacity">
+                     <a href="https://youtu.be/LwhhioOTLJg?si=vlIfGjuDcRdBN0YL">
+                        <img src="http://img.youtube.com/vi/LwhhioOTLJg/hqdefault.jpg"/>
+                    </a>
+                 </div>
+                 <div class="absolute bottom-4 left-4">
+                     <h3 class="font-bold text-base">Merry Christmas Mr Lawrence</h3>
+                     <div class="text-[10px] text-gray-500 font-mono">Ryuichi Sakamoto / COVER</div>
+                 </div>
+              </article>
+            </div>
+        </div>
+      </section>
+
+      <div class="flex flex-col gap-32 mb-32 md:pl-20">
+        
+        <section id="diary" class="reveal">
+          <h2 class="text-3xl font-bold font-serif mb-8 tracking-wider border-b border-[#333] pb-4 inline-block">BLOG</h2>
+          
+          <div class="flex flex-col font-mono text-sm border-t border-[#222] max-h-[300px] overflow-y-auto">
+            <!-- 
+			<a href="https://note.com" target="_blank" class="group flex flex-col md:flex-row md:items-center py-6 border-b border-[#222] hover:bg-[#0a0a0a] transition-colors">
+                <div class="md:w-32 text-gray-500 text-xs mb-2 md:mb-0 group-hover:text-white transition-colors">2026.01.01</div>
+                <div class="hidden md:block w-[1px] h-8 bg-[#00FF41] mr-8 opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                <div class="flex-1 font-serif font-bold text-base md:text-lg text-gray-300 group-hover:text-white transition-colors">
+                    ～
+                </div>
+                <div class="text-gray-600 group-hover:text-white transition-colors ml-4">→</div>
+            </a>
+			-->
+			<a href="https://note.com/domewo/n/nb33ed5e2e1f1" target="_blank" class="group flex flex-col md:flex-row md:items-center py-6 border-b border-[#222] hover:bg-[#0a0a0a] transition-colors">
+                <div class="md:w-32 text-gray-500 text-xs mb-2 md:mb-0 group-hover:text-white transition-colors">2025.10.12</div>
+                <div class="hidden md:block w-[1px] h-8 bg-[#00FF41] mr-8 opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                <div class="flex-1 font-serif font-bold text-base md:text-lg text-gray-300 group-hover:text-white transition-colors">
+                    Hello, myself.
+                </div>
+                <div class="text-gray-600 group-hover:text-white transition-colors ml-4">→</div>
+            </a>
+          </div>
+        </section>
+
+        <section id="signal" class="reveal md:pl-0">
+			<h2 class="text-3xl font-bold font-serif mb-8 tracking-wider border-b border-[#333] pb-4 inline-block">SIGNAL</h2>
+			
+			<div class="flex justify-center md:justify-start gap-8">
+				{socialLinks.map((url) => (
+				<a href={url} target="_blank" class="w-16 h-16 rounded-full bg-[#0a0a0a] border border-[#333] flex items-center justify-center hover:bg-white hover:text-black transition-all duration-300 group">
+				   <i class={`${getIconClass(url)} text-2xl`}></i>
+                </a>
+    			 ))}
+  			</div>
+		</section>
+
+      </div>
+
+      <footer class="text-center text-white text-[10px] font-mono py-12">
+         <p>&copy; 2026 KAZUTO FUKUDOME.</p>
+      </footer>
+
+    </main>
+
+    <script>
+      // 1. Side Navigation Logic (Slide-in + Gear Rotation)
+      const hero = document.getElementById('hero');
+      const sideNav = document.getElementById('side-nav');
+      const gear = document.getElementById('nav-gear');
+      
+      const heroObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) {
+                sideNav.classList.remove('-translate-x-full');
+            } else {
+                sideNav.classList.add('-translate-x-full');
+            }
+        });
+      }, { threshold: 0.1 });
+
+      if(hero) heroObserver.observe(hero);
+
+      window.addEventListener('scroll', () => {
+          if (gear) {
+              const rotateVal = window.scrollY / 5;
+              gear.style.transform = `rotate(${rotateVal}deg)`;
+          }
+      });
+
+      // 2. Mobile Menu Logic
+      const mobileToggle = document.getElementById('mobile-toggle');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const mobileLinks = document.querySelectorAll('.mobile-link');
+      let isMobileMenuOpen = false;
+
+      mobileToggle.addEventListener('click', () => {
+          isMobileMenuOpen = !isMobileMenuOpen;
+          if (isMobileMenuOpen) {
+              mobileMenu.classList.add('mobile-menu-enter-active');
+              mobileToggle.children[0].style.transform = "rotate(45deg) translate(5px, 5px)";
+              mobileToggle.children[1].style.transform = "rotate(-45deg) translate(5px, -5px)";
+          } else {
+              mobileMenu.classList.remove('mobile-menu-enter-active');
+              mobileToggle.children[0].style.transform = "none";
+              mobileToggle.children[1].style.transform = "none";
+          }
+      });
+
+      mobileLinks.forEach(link => {
+          link.addEventListener('click', () => {
+              isMobileMenuOpen = false;
+              mobileMenu.classList.remove('mobile-menu-enter-active');
+              mobileToggle.children[0].style.transform = "none";
+              mobileToggle.children[1].style.transform = "none";
+          });
+      });
+
+      // 3. Scroll Reveal
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+      // 4. Filters
+      const buttons = document.querySelectorAll('.filter-btn');
+      const items = document.querySelectorAll('.work-item');
+
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          buttons.forEach(b => {
+             b.classList.remove('text-white', 'border-b', 'border-white');
+             b.classList.add('text-gray-600');
+          });
+          btn.classList.remove('text-gray-600');
+          btn.classList.add('text-white', 'border-b', 'border-white');
+
+          const filter = btn.getAttribute('data-filter');
+          items.forEach(item => {
+            const category = item.getAttribute('data-category');
+            if (filter === 'all' || category === filter) {
+              item.style.display = '';
+            } else {
+              item.style.display = 'none';
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
