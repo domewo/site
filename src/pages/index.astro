@@ -139,8 +139,8 @@ const getIconClass = (url) => {
 
     <main class="max-w-6xl mx-auto px-6 py-24 relative z-10">
 
-      <section id="hero" class="min-h-[90vh] flex flex-col justify-center mb-20 pl-4 md:pl-20">
-        <div class="reveal active flex flex-col md:flex-row items-start md:items-center gap-12 md:gap-24">
+      <section id="hero" class="min-h-[60vh] flex flex-col justify-center mb-20 pl-4 md:pl-20">
+        <div class="reveal active flex flex-col md:flex-row items-center gap-12 md:gap-24">
             <div>
                 <h1 class="text-6xl md:text-8xl font-bold tracking-widest leading-none mb-6 font-serif">
                 KAZUTO<br>FUKUDOME
@@ -149,15 +149,15 @@ const getIconClass = (url) => {
                 AUDIO & EEG RESEARCH BEGINNER / MUSIC CREATOR (DOMEWO)
                 </p>
             </div>
-            <div class="w-full md:w-64 aspect-[1/1]  border-[#333] relative overflow-hidden group"><!--bg-[#111] border-->
-				<!--<div class="absolute inset-0 flex items-center justify-center opacity-20">
+            <!--<div class="w-full md:w-64 aspect-[1/1]  border-[#333] relative overflow-hidden group">bg-[#111] border
+				<div class="absolute inset-0 flex items-center justify-center opacity-20">
                     <div class="w-32 h-32 border border-white rounded-full"></div>
                     <div class="absolute w-[1px] h-full bg-white"></div>
                 </div>
                 <div class="absolute bottom-2 right-2 font-mono text-[10px] text-gray-500">
 					<img src="/site/domewologo.jpeg" alt="Portrait" class="object-cover w-full h-full"/>
-				</div>-->
-            </div>
+				</div>
+            </div>-->
         </div>
       </section>
 
@@ -314,7 +314,7 @@ const getIconClass = (url) => {
       </section>
 
       <section id="archives" class="mb-56 reveal md:pl-20">
-        <div class="flex flex-col md:flex-row md:items-end gap-48 mb-8 pb-4 border-b border-[#222]">
+        <div class="flex flex-col md:flex-row md:items-end gap-4 md:gap-48 mb-8 pb-4 border-b border-[#222]">
            <h2 class="text-3xl font-bold font-serif tracking-wider">ARCHIVES</h2>
            <div class="flex gap-6 font-mono text-xs tracking-wider" id="filters">
              <button class="filter-btn text-white border-b border-white pb-1" data-filter="all">ALL</button>
@@ -491,7 +491,7 @@ const getIconClass = (url) => {
                 sideNav.classList.add('-translate-x-full');
             }
         });
-      }, { threshold: 0.1 });
+      }, { rootMargin: "-50% 0px 0px 0px" });
 
       if(hero) heroObserver.observe(hero);
 
