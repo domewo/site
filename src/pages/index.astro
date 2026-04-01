@@ -3,12 +3,13 @@
 
 // 自分のSNSリンク
 const socialLinks = [
+  "https://github.com/domewo",  
   "https://x.com/@domew0",
   "https://instagram.com/@domewo3",
   "https://youtube.com/@domewo",
   "https://soundcloud.com/domewo",
   "https://note.com/domewo",
- // "https://github.com/YourAccount","https://~.com/myAccount",,
+ //"https://~.com/myAccount",,
 ];
 
 // リンクからアイコンを自動判定する関数
@@ -27,11 +28,13 @@ const getIconClass = (url) => {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>DOMEWO website</title>
+    <title>DOMEWO homepage</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@400;500;700&family=Shippori+Mincho:wght@500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" type="image/png" href="/site/favicon.png" />
+    <link rel="apple-touch-icon" href="/site/favicon.png" />
 
     <style>
       /* カスタムスクロールバー */
@@ -166,7 +169,7 @@ const getIconClass = (url) => {
         <div class="bg-[#0a0a0a] border border-[#333] font-mono text-sm md:text-base relative shadow-2xl">
           
           <div class="flex flex-col py-2 max-h-[300px] overflow-y-auto log-container">
-			<!-- [NEWS] [RELEASE] [PAPER] [CONFERENCE] -->
+			<!-- [NEWS] [RELEASE] [PAPER] [CONFERENCE] [PUSH]-->
 			<!-- 
 			<div class="flex group hover:bg-[#111] transition-colors log-row">
                 <div class="w-10 md:w-12 text-gray-600 text-right pr-3 py-1 select-none flex-none border-r border-[#333] leading-relaxed log-number"></div>
@@ -187,15 +190,52 @@ const getIconClass = (url) => {
              </div>
 			
 			-->
+             <div class="flex group hover:bg-[#111] transition-colors log-row">
+                <div class="w-10 md:w-12 text-gray-600 text-right pr-3 py-1 select-none flex-none border-r border-[#333] leading-relaxed log-number"></div>
+                
+                <div class="flex-1 py-1 px-4 flex flex-col md:flex-row md:items-baseline md:gap-0 leading-relaxed">
+                    <div class="flex items-center gap-3 md:gap-0 shrink-0">
+                        <span class="text-gray-600 select-none md:w-6">&gt;</span>
+                        <span class="text-[#56b6c2] md:w-28">2026-04-01</span>
+                        <div class="md:w-24">
+                           <span class="text-green-400 font-bold tracking-tighter text-xs select-none shadow-[0_0_10px_rgba(74,222,128,0.3)]">/* NEW */</span>
+                        </div>
+                        <span class="text-[#00bfff] font-bold md:w-32">[PUSH]</span>
+                    </div>
+                    <div >
+                        <a href="https://github.com/domewo/ZipPeeker" target="_blank" class="text-gray-300 w-full md:flex-1 pl-6 md:pl-0 mt-1 md:mt-0 group-hover:text-white transition-colors">
+                        Pushed a new app (ZipPeeker) on GitHub.
+                        </a>
+                    </div>
+                </div>
+             </div>
+
+            <div class="flex group hover:bg-[#111] transition-colors log-row">
+                <div class="w-10 md:w-12 text-gray-600 text-right pr-3 py-1 select-none flex-none border-r border-[#333] leading-relaxed log-number"></div>
+                
+                <div class="flex-1 py-1 px-4 flex flex-col md:flex-row md:items-baseline md:gap-0 leading-relaxed">
+                    <div class="flex items-center gap-3 md:gap-0 shrink-0">
+                        <span class="text-gray-600 select-none md:w-6">&gt;</span>
+                        <span class="text-[#56b6c2] md:w-28">2026-03-25</span>
+                        <div class="md:w-24">
+                           <span class="text-green-400 font-bold tracking-tighter text-xs select-none shadow-[0_0_10px_rgba(74,222,128,0.3)]">/* NEW */</span>
+                        </div>
+                        <span class="text-[#98c379] font-bold md:w-32">[NEWS]</span>
+                    </div>
+                    <div >
+                        <a href="https://x.com/domew0/status/2036819893249794184?s=46&t=vREbW2nHW9vGv3jgMQZuew" target="_blank" class="text-gray-300 w-full md:flex-1 pl-6 md:pl-0 mt-1 md:mt-0 group-hover:text-white transition-colors">
+                        Completed my undergraduate program.
+                        </a>
+                    </div>
+                </div>
+             </div>
 			 <div class="flex group hover:bg-[#111] transition-colors log-row">
                 <div class="w-10 md:w-12 text-gray-600 text-right pr-3 py-1 select-none flex-none border-r border-[#333] leading-relaxed log-number"></div>
                 <div class="flex-1 py-1 px-4 flex flex-col md:flex-row md:items-baseline md:gap-0 leading-relaxed">
                     <div class="flex items-center gap-3 md:gap-0 shrink-0">
                         <span class="text-gray-600 select-none md:w-6">&gt;</span>
                         <span class="text-[#56b6c2] md:w-28">2026-01-17</span>
-                        <div class="md:w-24">
-							<span class="text-green-400 font-bold tracking-tighter text-xs select-none shadow-[0_0_10px_rgba(74,222,128,0.3)]">/* NEW */</span>
-						</div>
+                        <div class="md:w-24"></div>
                         <span class="text-[#98c379] font-bold md:w-32">[NEWS]</span>
                     </div>
                     <div class="text-gray-300 w-full md:flex-1 pl-6 md:pl-0 mt-1 md:mt-0 group-hover:text-white transition-colors">
@@ -321,6 +361,7 @@ const getIconClass = (url) => {
              <button class="filter-btn text-white border-b border-white pb-1" data-filter="all">ALL</button>
              <button class="filter-btn text-gray-600 hover:text-white transition-colors pb-1" data-filter="music">MUSIC</button>
              <button class="filter-btn text-gray-600 hover:text-white transition-colors pb-1" data-filter="video">VIDEO</button>
+             <button class="filter-btn text-gray-600 hover:text-white transition-colors pb-1" data-filter="works">WORKS</button>
              <button class="filter-btn text-gray-600 hover:text-white transition-colors pb-1" data-filter="paper">PAPER</button>
              <button class="filter-btn text-gray-600 hover:text-white transition-colors pb-1" data-filter="talk">ORAL</button>
            </div>
@@ -351,6 +392,36 @@ const getIconClass = (url) => {
                  </div>
               </article>
 
+              <article class="work-item group relative bg-[#0a0a0a] overflow-hidden border border-[#222] hover:border-gray-500 transition-colors" data-category="works">
+                    <div class="absolute -right-4 -top-8 text-[120px] font-mono text-[#111] font-thin pointer-events-none select-none">
+                        }
+                    </div>
+
+                    <div class="p-6 h-full flex flex-col justify-between relative z-10">
+                        <div>
+                            <div class="font-mono text-[10px] text-gray-500 mb-4 tracking-wider">
+                                > root@works:~# <span class="inline-block w-1.5 h-3 bg-gray-500 animate-pulse align-middle ml-1"></span>
+                            </div>
+                            
+                            <h3 class="font-bold text-lg text-white mb-2 group-hover:underline decoration-1 underline-offset-4 tracking-wide">
+                                洋楽空耳パロディ生成システム
+                            </h3>
+                            <p class="text-[11px] text-gray-400 font-mono">Python / Audio Signal Processing</p>
+                        </div>
+
+                        <div class="flex justify-between items-end mt-8">
+                            <span class="text-[10px] text-[#444] font-mono">2025.10</span>
+                            <span class="text-[10px] text-white font-mono group-hover:translate-x-2 transition-transform duration-300">
+                                GITHUB ->
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <a href="https://github.com/domewo/リポジトリ名" target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-20">
+                        <span class="sr-only">GitHub</span>
+                    </a>
+                </article>
+
               <article class="work-item md:col-span-2 group relative bg-[#050505] overflow-hidden" data-category="paper">
                  <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:20px_20px]"></div>
                  <div class="absolute bottom-0 left-0 p-8 w-full z-10">
@@ -372,9 +443,38 @@ const getIconClass = (url) => {
                 <div class="absolute bottom-4 left-4 font-mono text-[10px] text-white border border-white px-1">ASJ 2025</div>
               </article>
                -->
+              <article class="work-item group relative bg-[#0a0a0a] overflow-hidden border border-[#222] hover:border-gray-500 transition-colors" data-category="works">
+                    <div class="absolute -right-4 -top-8 text-[120px] font-mono text-[#111] font-thin pointer-events-none select-none">
+                        }
+                    </div>
+
+                    <div class="p-6 h-full flex flex-col justify-between relative z-10">
+                        <div>
+                            <div class="font-mono text-[10px] text-gray-500 mb-4 tracking-wider">
+                                > root@works:~# <span class="inline-block w-1.5 h-3 bg-gray-500 animate-pulse align-middle ml-1"></span>
+                            </div>
+                            
+                            <h3 class="font-mono text-lg text-white mb-2 group-hover:underline decoration-1 underline-offset-4 tracking-wide">
+                                ZipPeeker
+                            </h3>
+                            <p class="text-[11px] text-gray-400 font-mono">Python / Application</p>
+                        </div>
+
+                        <div class="flex justify-between items-end mt-8">
+                            <span class="text-[10px] text-[#444] font-mono">2025.4.1</span>
+                            <span class="text-[10px] text-white font-mono group-hover:translate-x-2 transition-transform duration-300">
+                                GITHUB ->
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <a href="https://github.com/domewo/ZipPeeker" target="_blank" rel="noopener noreferrer" class="absolute inset-0 z-20">
+                        <span class="sr-only">GitHub</span>
+                    </a>
+                </article>
               <article class="work-item md:col-span-2 group relative bg-[#080808] overflow-hidden" data-category="talk">
                 <a href="https://jglobal.jst.go.jp/detail?JGLOBAL_ID=202502217459907737" class="absolute inset-0 flex items-center justify-center p-8">
-                    <h3 class="font-serif text-xl text-center leading-relaxed text-gray-500 group-hover:text-white transition-colors duration-500">
+                    <h3 class="font-serif text-xl text-center leading-relaxed text-white mb-2 group-hover:underline decoration-1 underline-offset-4 tracking-wide">
                         「日本語文章の疑問形が<br>遅延聴覚フィードバック条件下での<br>発話に与える影響」
                     </h3>
                 </a>
